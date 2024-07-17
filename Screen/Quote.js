@@ -1,0 +1,129 @@
+import { Text, SafeAreaView, StyleSheet, TouchableOpacity,View,Image ,ScrollView} from 'react-native';
+
+import {useState, useEffect} from 'react'
+
+
+export default function App(props) {
+  const [data, setData] = useState([])
+  const [ change, setChange] = useState(false)
+  
+ 
+function cool(){
+  setChange(!change)
+}
+function APICall(){
+
+fetch('https://api.quotable.io/random')
+.then((response)=>response.json())
+.then((json)=>setData(json))
+.catch((error)=>console.log(error))
+
+
+
+}
+ 
+
+  useEffect(() => {
+    APICall();
+  }, [change]);
+
+  return (
+ <View style={{flex:1,backgroundColor:"white"}}>
+    <View style={{flex:1,}}>
+    <Text style={{fontSize: 25,
+    fontWeight: 'bold',
+    marginTop:60,
+    color: 'black',alignSelf:"center"}}>Quote of the Day</Text>
+    </View>
+    <View style={styles.container }>
+
+   <Image style={styles.gif} source={{uri:"https://media.tenor.com/fXR9cHi8kmIAAAAi/lets-go-motivation.gif"}}/>
+
+  <Text style={styles.content}>{data.content} <Text style={styles.textcontent}>{data.quote}-{data.author} | Topic: {data.tags}</Text></Text>
+
+   </View>
+   <View style={{flex:1}}>
+  <TouchableOpacity onPress={cool} style={styles.button}>
+  <Text style={{fontSize:20, fontWeight:'bold', color:'black'}}>Next</Text>
+  </TouchableOpacity>
+   <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            props.navigation.navigate('Home');
+          }}>
+          <Text style={{fontWeight:'bold', fontSize:20}}>Back</Text>
+        </TouchableOpacity>
+ </View>
+ </View>
+
+        
+     
+      
+        
+      
+    
+  );
+}
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 3,
+    alignItems: 'center',
+    paddingTop: 10,
+     margin:20,
+     marginTop:20,
+     overflow: 'hidden',
+     height:650,
+     width:"85%",
+     padding:10,
+     borderRadius:50,
+     backgroundColor:"#FAF37F",
+     marginLeft:30
+  },
+ 
+ 
+  gif: {
+    width: 200,
+    height: 200,
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginBottom: 20, 
+    marginTop:10
+  },
+
+  content: {
+    marginRight: 20,
+    fontSize: 15,
+    marginBottom: 10, // Add some margin below the content
+    marginLeft: 20,
+    alignSelf: 'center',
+  },
+  textcontent: {
+    fontSize: 15,
+    color: '#3B3A3B',
+    marginRight: 10,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+  },
+  button: {
+    backgroundColor: '#6495ed',
+    color: '#3A59FF',
+    width: '75%',
+    height: 30,
+    borderRadius: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    
+    alignSelf:"center",
+    fontSize: 15,
+    marginTop: '10%',
+    alignItems: 'center',
+  },
+});
+
+
+  
+
+
